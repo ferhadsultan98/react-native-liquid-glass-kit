@@ -1,0 +1,10 @@
+* text=auto
+*.gradle text eol=lf
+*.js text eol=lf
+*.json text eol=lf
+*.kt text eol=lf
+*.md text eol=lf
+*.ts text eol=lf
+*.xml text eol=lf
+*.png binary
+*.txt text eol=lf
