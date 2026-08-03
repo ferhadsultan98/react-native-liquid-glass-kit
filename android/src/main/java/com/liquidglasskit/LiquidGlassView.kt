@@ -1,4 +1,4 @@
-package com.sultan.liquidglass
+package com.liquidglasskit
 
 // Ported from @uginy/react-native-liquid-glass (MIT license)
 // android/src/main/java/com/liquidglass/LiquidGlassView.kt — same AGSL shader
@@ -50,6 +50,7 @@ import kotlin.math.tanh
 class LiquidGlassView(context: Context) : ReactViewGroup(context) {
 
   private val density = resources.displayMetrics.density
+  private var interactionEnabled = true
 
   var shaderBlurRadius: Float = 8f * density
     set(value) { field = value.coerceIn(0f, 100f * density); propsDirty = true; invalidate() }
@@ -148,6 +149,34 @@ class LiquidGlassView(context: Context) : ReactViewGroup(context) {
   }
 
   fun setSaturation(value: Float) { shaderSaturation = finiteOr(value, 1f) }
+
+  fun setInteractionEnabled(enabled: Boolean) {
+    if (interactionEnabled == enabled) return
+    interactionEnabled = enabled
+    isClickable = enabled
+
+    if (!enabled) {
+      removeCallbacks(interactionAnimation)
+      interactionAnimationPosted = false
+      interactionFrameNanos = 0L
+      pressSpring.value = 0f
+      pressSpring.velocity = 0f
+      pressSpring.target = 0f
+      dragXSpring.value = 0f
+      dragXSpring.velocity = 0f
+      dragXSpring.target = 0f
+      dragYSpring.value = 0f
+      dragYSpring.velocity = 0f
+      dragYSpring.target = 0f
+      isPressed = false
+      translationX = 0f
+      translationY = 0f
+      scaleX = 1f
+      scaleY = 1f
+      parent?.requestDisallowInterceptTouchEvent(false)
+      invalidate()
+    }
+  }
 
   fun setTintColor(color: Int) {
     tintR = Color.red(color) / 255f
@@ -570,9 +599,12 @@ class LiquidGlassView(context: Context) : ReactViewGroup(context) {
     }
   }
 
-  override fun onInterceptTouchEvent(event: MotionEvent): Boolean = true
+  override fun onInterceptTouchEvent(event: MotionEvent): Boolean =
+    if (interactionEnabled) true else super.onInterceptTouchEvent(event)
 
   override fun onTouchEvent(event: MotionEvent): Boolean {
+    if (!interactionEnabled) return super.onTouchEvent(event)
+
     when (event.actionMasked) {
       MotionEvent.ACTION_DOWN -> {
         parent?.requestDisallowInterceptTouchEvent(true)

@@ -10,6 +10,8 @@ import type {
 } from 'react-native/Libraries/Types/CodegenTypes';
 
 export interface LiquidGlassViewProps extends ViewProps {
+  /** Enables native press, drag, highlight, and spring-return physics. */
+  interactive?: WithDefault<boolean, true>;
   /** Backdrop blur radius in density-independent pixels. */
   blurRadius?: WithDefault<Float, 8>;
   /** Shape corner radius in density-independent pixels. */

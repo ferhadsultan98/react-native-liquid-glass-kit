@@ -1,41 +1,13 @@
-import React, { forwardRef } from 'react';
-import {
-  NativeModules,
-  Platform,
-  processColor,
-  type ColorValue,
-} from 'react-native';
+import { NativeModules, Platform } from 'react-native';
 
-import NativeLiquidGlassView, {
-  type LiquidGlassViewProps,
-} from './NativeLiquidGlassView';
+export { LiquidGlassView } from './LiquidGlassView';
+export type { LiquidGlassViewProps } from './NativeLiquidGlassView';
+export { default } from './LiquidGlassView';
 
-/**
- * Public wrapper around the generated Fabric component.
- *
- * Published libraries are consumed from precompiled JavaScript, so React
- * Native's Babel colour transform does not run for their props. Normalising
- * the tint here keeps the public API consistent with built-in RN components:
- * callers may safely pass named, hex, rgb(a), hsl(a), or platform colours.
- */
-export const LiquidGlassView = forwardRef<
-  React.ElementRef<typeof NativeLiquidGlassView>,
-  LiquidGlassViewProps
->(({ tintColor, ...props }, ref) =>
-  React.createElement(NativeLiquidGlassView, {
-    ...props,
-    ref,
-    tintColor:
-      tintColor == null
-        ? undefined
-        : (processColor(tintColor) as unknown as ColorValue),
-  }),
-);
-
-LiquidGlassView.displayName = 'LiquidGlassView';
-
-export type { LiquidGlassViewProps };
-export default LiquidGlassView;
+export {
+  LiquidGlassButton,
+  type LiquidGlassButtonProps,
+} from './LiquidGlassButton';
 
 type ImagePickerModule = {
   pickImage(): Promise<string | null>;
@@ -53,7 +25,7 @@ export async function pickLiquidGlassImage(): Promise<string | null> {
 
   if (imagePicker == null) {
     throw new Error(
-      'react-native-sultan-liquid-glass is not linked. Rebuild the Android app after installation.',
+      'react-native-liquid-glass-kit is not linked. Rebuild the Android app after installation.',
     );
   }
 

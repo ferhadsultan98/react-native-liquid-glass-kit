@@ -22,7 +22,7 @@ apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.facebook.react"
 
 android {
-    namespace "com.sultan.liquidglass"
+    namespace "com.liquidglasskit"
     compileSdkVersion getExtOrDefault("compileSdkVersion", 35)
 
     defaultConfig {

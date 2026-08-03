@@ -6,7 +6,7 @@ module.exports = {
       android: {
         sourceDir: './android',
         packageImportPath:
-          'import com.sultan.liquidglass.LiquidGlassPackage;',
+          'import com.liquidglasskit.LiquidGlassPackage;',
         packageInstance: 'new LiquidGlassPackage()',
       },
       ios: null,

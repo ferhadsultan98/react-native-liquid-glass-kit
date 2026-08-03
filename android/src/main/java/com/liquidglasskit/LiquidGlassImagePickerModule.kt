@@ -1,4 +1,4 @@
-package com.sultan.liquidglass
+package com.liquidglasskit
 
 import android.app.Activity
 import android.content.Intent

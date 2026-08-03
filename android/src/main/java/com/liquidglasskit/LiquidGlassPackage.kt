@@ -1,4 +1,4 @@
-package com.sultan.liquidglass
+package com.liquidglasskit
 
 import com.facebook.react.ReactPackage
 import com.facebook.react.bridge.NativeModule

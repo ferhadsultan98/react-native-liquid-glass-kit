@@ -1,5 +1,5 @@
 {
-  "name": "react-native-sultan-liquid-glass",
+  "name": "react-native-liquid-glass-kit",
   "version": "0.1.0",
   "description": "Native Android liquid glass for React Native with AGSL refraction, blur, tint, depth and interactive optics.",
   "keywords": [
@@ -13,17 +13,17 @@
     "fabric",
     "new-architecture"
   ],
-  "homepage": "https://github.com/ferhadsultan98/react-native-sultan-liquid-glass#readme",
+  "homepage": "https://github.com/ferhadsultan98/react-native-liquid-glass-kit#readme",
   "bugs": {
-    "url": "https://github.com/ferhadsultan98/react-native-sultan-liquid-glass/issues"
+    "url": "https://github.com/ferhadsultan98/react-native-liquid-glass-kit/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ferhadsultan98/react-native-sultan-liquid-glass.git"
+    "url": "git+https://github.com/ferhadsultan98/react-native-liquid-glass-kit.git"
   },
   "license": "MIT",
   "author": {
-    "name": "Sultan",
+    "name": "Farhad Sultanov",
     "url": "https://github.com/ferhadsultan98"
   },
   "main": "./lib/commonjs/index.js",
@@ -78,8 +78,7 @@
     "node": ">=20.19.0"
   },
   "publishConfig": {
-    "access": "public",
-    "provenance": true
+    "access": "public"
   },
   "sideEffects": false,
   "react-native-builder-bob": {
@@ -101,7 +100,7 @@
     "type": "components",
     "jsSrcsDir": "src",
     "android": {
-      "javaPackageName": "com.sultan.liquidglass"
+      "javaPackageName": "com.liquidglasskit"
     }
   }
 }

@@ -1,4 +1,4 @@
-package com.sultan.liquidglass
+package com.liquidglasskit
 
 import android.graphics.Color
 import com.facebook.react.module.annotations.ReactModule
@@ -19,6 +19,11 @@ class LiquidGlassViewManager : ViewGroupManager<LiquidGlassView>(), RNLiquidGlas
   override fun getName(): String = NAME
 
   override fun createViewInstance(reactContext: ThemedReactContext): LiquidGlassView = LiquidGlassView(reactContext)
+
+  @ReactProp(name = "interactive", defaultBoolean = true)
+  override fun setInteractive(view: LiquidGlassView, value: Boolean) {
+    view.setInteractionEnabled(value)
+  }
 
   @ReactProp(name = "blurRadius", defaultFloat = 8f)
   override fun setBlurRadius(view: LiquidGlassView, value: Float) {

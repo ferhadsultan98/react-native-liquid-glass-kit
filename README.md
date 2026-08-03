@@ -1,10 +1,7 @@
-# React Native Sultan Liquid Glass
+# React Native Liquid Glass Kit
 
-Native Android liquid glass for React Native, maintained by **Sultan**.
-
-The package captures the real React Native background and renders blur,
-refraction, tint, depth, edge highlights, chromatic dispersion, and interactive
-press physics in a Kotlin-backed native view.
+Native Android liquid glass for React Native with real backdrop capture, blur,
+refraction, tint, depth, chromatic dispersion, borders, and press physics.
 
 > Android only. React Native New Architecture is required.
 
@@ -15,21 +12,47 @@ press physics in a Kotlin-backed native view.
 ## Installation
 
 ```bash
-npm install react-native-sultan-liquid-glass
+npm install react-native-liquid-glass-kit
 ```
 
 Rebuild the Android application after installation. Android autolinking and
 Codegen register the package automatically; no manual `MainApplication` edit is
 required.
 
-## Basic usage
+## LiquidGlassButton
+
+Use the ready-made accessible button for standard taps. The glass background
+does not steal the Pressable responder, so `onPress`, `disabled`, hit slop,
+accessibility, lists, forms, and dialogs continue to behave normally.
+
+```tsx
+import React from 'react';
+import {Text} from 'react-native';
+import {LiquidGlassButton} from 'react-native-liquid-glass-kit';
+
+export function SaveButton() {
+  return (
+    <LiquidGlassButton
+      accessibilityLabel="Save changes"
+      onPress={() => save()}
+      glassProps={{tintColor: 'rgba(0,136,255,0.75)'}}>
+      <Text style={{color: '#fff'}}>Save</Text>
+    </LiquidGlassButton>
+  );
+}
+```
+
+`LiquidGlassButton` also accepts `contentStyle`, `pressedScale`, and all normal
+React Native `PressableProps`.
+
+## LiquidGlassView
 
 Render a real React Native `Image` before the glass view:
 
 ```tsx
 import React from 'react';
 import {Image, StyleSheet, Text, View} from 'react-native';
-import {LiquidGlassView} from 'react-native-sultan-liquid-glass';
+import {LiquidGlassView} from 'react-native-liquid-glass-kit';
 
 export function Example() {
   return (
@@ -42,6 +65,7 @@ export function Example() {
 
       <LiquidGlassView
         style={styles.glass}
+        interactive
         cornerRadius={28}
         blurRadius={2}
         refractionStrength={0.5}
@@ -61,9 +85,30 @@ const styles = StyleSheet.create({
 });
 ```
 
-## Presets
+### Touch ownership
 
-Only `tintColor` needs to change for the four reference button styles:
+- `interactive={true}` is the default. The native view owns the gesture and
+  renders elastic press, drag, highlight, and spring-return physics.
+- `interactive={false}` disables native interception. Use this when the glass
+  is a visual layer around Buttons, Sliders, Switches, TextInputs, ScrollViews,
+  or any control that must own its responder.
+- Prefer `LiquidGlassButton` for ordinary accessible button behaviour.
+
+For a custom control, place a non-interactive glass layer behind it:
+
+```tsx
+<View style={styles.control}>
+  <LiquidGlassView
+    interactive={false}
+    pointerEvents="none"
+    style={StyleSheet.absoluteFill}
+    tintColor="rgba(255,255,255,0.24)"
+  />
+  <Slider value={value} onValueChange={setValue} />
+</View>
+```
+
+## Reference presets
 
 ```tsx
 // Transparent
@@ -99,7 +144,7 @@ noiseIntensity={0}
 The optional helper opens the system Photo Picker without storage permission:
 
 ```tsx
-import {pickLiquidGlassImage} from 'react-native-sultan-liquid-glass';
+import {pickLiquidGlassImage} from 'react-native-liquid-glass-kit';
 
 const uri = await pickLiquidGlassImage();
 if (uri) {
@@ -107,12 +152,11 @@ if (uri) {
 }
 ```
 
-Use the returned URI as the source of the background `Image`.
-
-## Properties
+## LiquidGlassView properties
 
 | Property | Default | Description |
 |---|---:|---|
+| `interactive` | `true` | Native press and elastic drag; disable for composed controls |
 | `blurRadius` | `8` | Backdrop blur radius in dp |
 | `cornerRadius` | `32` | Shape radius in dp |
 | `saturation` | `1` | Backdrop saturation |
@@ -149,18 +193,6 @@ are supported.
 - Android 12–12L: `RenderEffect` fallback.
 - Android 7–11: safe raster fallback.
 
-## Integration rules
-
-- The background must be a visible React Native `Image` rendered before the
-  glass view.
-- Use `drawable-nodpi` for bundled Android wallpapers that must not be density
-  scaled.
-- Rebuild the native Android app after installing or upgrading the package.
-- If JS must own the tap, put a `Pressable` above the glass and set the glass
-  layer to `pointerEvents="none"`.
-- For the native elastic press/drag behaviour, let `LiquidGlassView` receive the
-  touch directly.
-
 ## Troubleshooting
 
 ### `RNLiquidGlassView was not found`
@@ -180,14 +212,9 @@ npm run android
 Ensure the background `Image` has loaded, is visible, has non-zero dimensions,
 and is rendered before the glass component.
 
-### The background is unexpectedly zoomed
-
-For bundled Android resources, use `android/app/src/main/res/drawable-nodpi`
-instead of a density-specific drawable folder.
-
 ## License
 
-MIT © Sultan and contributors.
+MIT © contributors.
 
 Parts of the renderer are derived from MIT and Apache-2.0 projects. Required
 attribution is preserved in [THIRD_PARTY_NOTICES.md](./THIRD_PARTY_NOTICES.md)
